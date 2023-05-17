@@ -6,13 +6,13 @@
 #include<pthread.h>
 #include<unistd.h>
 #include <sched.h>
-#include"hw6.h"
+#include"controller.h"
 
 // when stop == 1, all threads quit voluntarily
 static int stop=0;
 
 /* This is an internal struct used by the enforcement system 
-   - there is no access to this from hw6.c */
+   - there is no access to this from controller.c */
 static struct Elevator {
     int seqno, last_action_seqno; // these two are used to enforce control rules
     int floor;	
@@ -89,10 +89,11 @@ void* start_elevator(void *arg) {
         elevator_ready(elevator,e->floor,elevator_move_direction,elevator_open_door,elevator_close_door);
         sched_yield();
     }
+    return NULL;
 }
 
 /* This is an internal struct used by the enforcement system 
-   - there is no access to this from hw6.c. */
+   - there is no access to this from controller.c. */
 
 static struct Passenger {
     int id;
@@ -112,7 +113,7 @@ void passenger_enter(int passenger, int elevator) {
         exit(1);
     }	
     if(elevators[elevator].passengers == MAX_CAPACITY) {
-        log(0,"VIOLATION: passenger %d attempted to board full elevator %d.\n", passengers[passenger].id, elevator);
+        log(0,"VIOLATION: passenger %d attempted to board full elevator %d occupancy: %d .\n", passengers[passenger].id, elevator, elevators[elevator].passengers);
         exit(1);
     }	
     if(passengers[passenger].state!=WAITING) {
@@ -120,7 +121,8 @@ void passenger_enter(int passenger, int elevator) {
         exit(1);
     }
 
-    log(6,"Passenger %d got on elevator %d at %d, requested %d\n", passengers[passenger].id, elevator, passengers[passenger].from_floor, elevators[elevator].floor);
+    log(0,"Passenger %d got on elevator %d at %d, requested %d\n", passengers[passenger].id, elevator, passengers[passenger].from_floor, elevators[elevator].floor);
+    log(0,"Elevator %d occupancy %d\n", elevator, elevators[elevator].passengers);
     elevators[elevator].passengers++;
     passengers[passenger].in_elevator = elevator;
     passengers[passenger].state = ENTERED;
@@ -180,9 +182,13 @@ void* start_passenger(void *arg) {
         usleep(100);
         //		usleep(DELAY); // sleep for some time
     }
+    return NULL;
 }
 
 void* draw_state(void *ptr) {
+    log(9,"Initializing %d passengers\n", PASSENGERS);
+    log(9,"Initializing %d elevators\n", ELEVATORS);
+
     while(1) {
         printf("\033[2J\033[1;1H");
         for(int floor=FLOORS-1;floor>=0;floor--) {

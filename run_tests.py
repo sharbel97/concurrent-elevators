@@ -32,7 +32,7 @@ for c in capacity:
 					contents = contents.replace(matcher_passengers, str(p))
 					contents = contents.replace(matcher_no_trips, str(n))
 
-					with open('hw6.h', 'w') as file:
+					with open('controller.h', 'w') as file:
 						file.write(contents)
 
 					print 'Running test', c
@@ -44,7 +44,7 @@ for c in capacity:
 
 					c += 1
 					os.system('make')
-					os.system('./hw6')
+					os.system('./controller')
 
 
 

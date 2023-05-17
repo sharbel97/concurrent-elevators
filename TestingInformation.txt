@@ -7,6 +7,6 @@ sequential on one type of thread (eg 1 passenger - 4 elevators,
 50 passengers - 1 elevator)
 
 Further custom testing is possible. You can play with all these
-values in hw6.h (don't forget to 'make' after applying these changes).
+values in controller.h (don't forget to 'make' after applying these changes).
 Also, don't change 'generator.txt', this is used for the tests. Lastly,
 don't forget to give the testing script the right permissions.

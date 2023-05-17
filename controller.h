@@ -1,3 +1,4 @@
+
 /* Change these experiment settings to try different scenarios. Parameters can 
    also be passed in using gcc flags, e.g. -DELEVATORS=5 */
 
@@ -10,11 +11,11 @@
 #endif 
 
 #ifndef FLOORS
-#define FLOORS 28
+#define FLOORS 12
 #endif 
 
 #ifndef PASSENGERS
-#define PASSENGERS 50
+#define PASSENGERS 20
 #endif 
 
 #ifndef TRIPS_PER_PASSENGER
